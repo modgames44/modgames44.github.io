@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>slopkit</title>
+<link rel="preload" href="slopkit/cat.jpg" as="image">
+<link rel="preload" href="slopkit/mmhmm-cats-ps5.gif" as="image">
+<style>
+  :root {
+    --landing-bg-image: url("slopkit/1.png");
+    --landing-bg-overlay: rgba(7, 11, 19, 0.52);
+    --landing-card-bg: rgba(9, 13, 22, 0.68);
+    --landing-border: rgba(255, 255, 255, 0.18);
+    --landing-text: #edf3ff;
+    --landing-subtext: #d9e4ff;
+    --landing-button-start: linear-gradient(135deg, #6a5cff, #3b82f6);
+  }
+
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    color: var(--landing-text);
+    font: 15px/1.5 "Segoe UI", system-ui, sans-serif;
+    overflow: hidden;
+    background:
+      linear-gradient(var(--landing-bg-overlay), var(--landing-bg-overlay)),
+      var(--landing-bg-image),
+      radial-gradient(circle at 50% 28%, #1a2440 0, #0e1322 44%, #070b14 100%);
+    background-size: cover, cover, cover;
+    background-position: center center, center center, center center;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.18);
+    pointer-events: none;
+  }
+
+  #wrap {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 22px;
+    padding: 24px;
+  }
+
+  #cat {
+    display: none;
+  }
+
+  #actions {
+    display: flex; flex-direction: column; gap: 14px;
+    align-items: center; justify-content: center;
+  }
+
+  .action {
+    box-sizing: border-box; display: inline-block; min-width: 190px;
+    padding: 18px 34px; border: 1px solid var(--landing-border);
+    border-radius: 16px; color: #fff;
+    background: var(--landing-button-start);
+    box-shadow: 0 18px 40px rgba(50, 86, 255, 0.38), inset 0 1px rgba(255,255,255,.2);
+    font: 800 21px/1 "Segoe UI", system-ui, sans-serif;
+    letter-spacing: .04em; text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+    backdrop-filter: blur(4px);
+  }
+
+  .action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 44px rgba(50, 86, 255, 0.46), inset 0 1px rgba(255,255,255,.2);
+  }
+
+  .action:focus {
+    outline: none; transform: translateY(-3px);
+    border-color: #fff; box-shadow: 0 0 0 4px rgba(111, 148, 255, 0.26), 0 20px 44px rgba(50, 86, 255, 0.46);
+  }
+
+  .action:active { transform: translateY(1px); }
+  .action.secondary {
+    color: #eaf2ff; background: linear-gradient(135deg, #273850, #172235);
+    box-shadow: 0 12px 30px rgba(0,0,0,.28), inset 0 1px rgba(255,255,255,.12);
+  }
+  .action.secondary:focus { box-shadow: 0 0 0 4px rgba(91,158,255,.25), 0 16px 36px rgba(0,0,0,.38); }
+  .action.done {
+    color: #effff4; background: linear-gradient(135deg, #239d52, #126531);
+    border-color: rgba(123,255,162,.55); box-shadow: 0 12px 30px rgba(24,142,67,.26);
+    pointer-events: none;
+  }
+
+  #status {
+    min-height: 1.5em; color: var(--landing-subtext);
+    font-size: 18px; text-shadow: 0 2px 8px rgba(0,0,0,.45);
+  }
+
+  @media (max-width: 650px) {
+    #actions { width: 82vw; }
+    .action { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div id="wrap">
+  <img id="cat" src="slopkit/cat.jpg" alt="">
+  <div id="actions">
+    <a id="start" class="action"
+       href="slopkit/poops.html?go=1&amp;auto=1&amp;trigger=netcontrol&amp;payload=1&amp;v=17"
+       tabindex="0">RUN</a>
+  </div>
+  <div id="status"></div>
+</div>
+
+<script>try {
+    var q = new URLSearchParams(location.search);
+    var start = document.getElementById("start");
+    start.focus();
+} catch (e) {}
+
+try {
+    document.getElementById("cat").addEventListener("error", function () {
+        this.style.display = "none";
+    });
+} catch (e) {}
+</script>
+
+</body>
+</html>
