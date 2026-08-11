@@ -181,18 +181,25 @@
   body.loader-ready { justify-content:flex-start; overflow-y:auto; padding-top:22px; }
   body.loader-ready #cat { width:112px; height:112px; margin-bottom:6px; }
   body.loader-ready #nav { display:none !important; }
-  #payloadMenu { display:none; width:330px; max-width:86vw; margin:4px auto 24px; }
+  #payloadMenu {
+    display:none; width:min(92vw, 420px); max-width:92vw;
+    margin:4px auto 24px; padding:8px 0 0; box-sizing:border-box;
+  }
   #payloadMenu.on { display:block; }
-  #payloadMenu .menuTitle { display:block; width:330px; height:56px;
-    max-width:100%; margin:0 0 10px; }
+  #payloadMenu .menuTitle {
+    display:block; width:100%; height:auto; max-width:100%;
+    margin:0 0 10px; object-fit:contain;
+  }
   #payloadMenu .payloadTile {
-    box-sizing:border-box; display:block; width:330px; max-width:100%;
+    box-sizing:border-box; display:block; width:100%; max-width:100%;
     margin:0 0 10px; padding:0; border:0; border-radius:13px;
     background:transparent; text-decoration:none !important;
   }
   #payloadMenu .payloadTile:focus { outline:3px solid #fff; outline-offset:2px; }
-  #payloadMenu .payloadTile img { display:block; width:330px; height:72px;
-    max-width:100%; margin:0 auto; }
+  #payloadMenu .payloadTile img {
+    display:block; width:100%; height:auto; max-width:100%;
+    margin:0 auto; object-fit:contain;
+  }
   #payloadMenu .payloadTile.busy { opacity:.42; }
 
   #wrap { display:none !important; }
@@ -216,6 +223,7 @@
   <img class="menuTitle" data-src="../ui/payload-menu-title.png" alt="">
   <a class="payloadTile" href="#" data-name="ftpsrv-ps5.elf" data-key="ftp"><img data-src="../ui/payload-ftp-default.png" alt=""></a>
   <a class="payloadTile" href="#" data-name="gdbsrv-ps5.elf" data-key="gdb"><img data-src="../ui/payload-gdb-default.png" alt=""></a>
+  <a class="payloadTile" href="#" data-name="kstuff.elf" data-key="kstuff"><img data-src="../ui/payload-kstuff-default.png" alt=""></a>
   <a class="payloadTile" href="#" data-name="klogsrv-ps5.elf" data-key="klog"><img data-src="../ui/payload-klog-default.png" alt=""></a>
   <a class="payloadTile" href="#" data-name="shsrv-ps5.elf" data-key="shell"><img data-src="../ui/payload-shell-default.png" alt=""></a>
   <a class="payloadTile" href="#" data-name="websrv-ps5.elf" data-key="web"><img data-src="../ui/payload-web-default.png" alt=""></a>
@@ -495,6 +503,7 @@ let payloadSenderBlocked = "";
 function showPayloadMenu() {
     navEl.textContent = "";
     navEl.style.display = "none";
+    payloadMenuEl.style.display = "block";
     payloadMenuEl.className = "on";
     const title = payloadMenuEl.getElementsByClassName("menuTitle")[0];
     if (title && !title.getAttribute("src"))
@@ -1480,9 +1489,11 @@ async function runLadder() {
         stage("stages 0-2 complete, nothing triggered, everything put back -- "
             + passed + " PASS", "ok");
 
-    if (payloadSuccess) {
+    if (payloadSuccess || fullSuccess) {
         flushMark("ELFLDR-MENU-INPAGE",
-            "no-navigation-parked-racers-and-fds-remain-owned-port=9021");
+            payloadSuccess
+                ? "no-navigation-parked-racers-and-fds-remain-owned-port=9021"
+                : "successful-run-open-payload-menu");
         showPayloadMenu();
     }
 }
